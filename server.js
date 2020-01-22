@@ -13,19 +13,15 @@ const hpp = require('hpp');
 const cors = require('cors');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
-
+// Route files
+const { bootcamps, courses, auth, users, reviews} = require('./routes');
 // Load env vars
 dotenv.config({ path: './config/config.env' });
 
 // Connect to database
 connectDB();
 
-// Route files
-const bootcamps = require('./routes/bootcamps');
-const courses = require('./routes/courses');
-const auth = require('./routes/auth');
-const users = require('./routes/users');
-const reviews = require('./routes/reviews');
+
 
 const app = express();
 

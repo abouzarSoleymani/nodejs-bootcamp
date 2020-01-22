@@ -3,6 +3,9 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const sendEmail = require('../utils/sendEmail');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+
+const tokenList = [];
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register
@@ -48,6 +51,29 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   sendTokenResponse(user, 200, res);
 });
+
+// @desc      toekn User
+// @route     POST /api/v1/auth/token
+// @access    Public
+exports.refreshToken = asyncHandler(async (req, res, next) => {
+  const refreshToken = req.body.token;
+  // Validate refresh token
+  if((!refreshToken) || (!tokenList.includes(refreshToken))) {
+    return next(new ErrorResponse('Invalid request refresh token', 404));
+  }
+  try {
+  // Verify token
+  const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+  const user = await User.findById(decoded.id);
+  sendTokenResponse(user, 200, res);
+  } catch (err) {
+    return next(new ErrorResponse('Not authorized to access this route', 401));
+  }
+
+});
+
+
+
 
 // @desc      Log user out / clear cookie
 // @route     GET /api/v1/auth/logout
@@ -191,7 +217,8 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token
   const token = user.getSignedJwtToken();
-
+  const refreshToken = user.getSignedJwtRefreshToken();
+  tokenList.push(refreshToken);
   const options = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
@@ -205,9 +232,10 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   res
     .status(statusCode)
-    .cookie('token', token, options)
+    .cookie('token', token,'refreshToken', refreshToken, options)
     .json({
       success: true,
-      token
+      token,
+      refreshToken
     });
 };
