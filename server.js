@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const cors = require('cors');
 const colors = require('colors');
 const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
@@ -10,9 +11,11 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
-const cors = require('cors');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
+const logger = require("./middleware/logger");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 // Route files
 const { bootcamps, courses, auth, users, reviews} = require('./routes');
 // Load env vars
@@ -25,6 +28,7 @@ connectDB();
 
 const app = express();
 
+
 // Body parser
 app.use(express.json());
 
@@ -32,9 +36,20 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Dev logging middleware
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('dev'));
+// }
+app.use(morgan('development', {
+  skip: function (req, res) {
+     return res.statusCode < 400
+  }, stream: process.stderr
+}));
+
+app.use(morgan('development', {
+  skip: function (req, res) {
+    return res.statusCode >= 400
+  }, stream: process.stdout
+}));
 
 // File uploading
 app.use(fileupload());
@@ -47,6 +62,7 @@ app.use(helmet());
 
 // Prevent XSS attacks
 app.use(xss());
+
 
 // Rate limiting
 const limiter = rateLimit({
@@ -65,6 +81,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
@@ -76,10 +93,10 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(
-  PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
-  )
+  PORT, () => {
+      logger.info(`Example app listening on port ${PORT}`);
+      logger.debug(`More detailed log ${PORT}`);
+    }
 );
 
 // Handle unhandled promise rejections
