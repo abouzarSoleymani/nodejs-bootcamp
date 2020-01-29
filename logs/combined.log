@@ -1,4 +1,7 @@
-2020-01-24 10:38:37 info: 	Example app listening on port 5000 
-2020-01-24 10:38:37 debug: 	More detailed log 5000 
-2020-01-24 10:53:14 info: 	Example app listening on port 5000 
-2020-01-24 10:53:14 debug: 	More detailed log 5000 
+
+2020-01-30 00:08:49 info: 	Example app listening on port 5000 
+2020-01-30 00:08:49 debug: 	More detailed log 5000 
+2020-01-30 00:08:55 info: 	Example app listening on port 5000 
+2020-01-30 00:08:55 debug: 	More detailed log 5000 
+2020-01-30 00:09:16 info: 	::ffff:127.0.0.1 - GET /api/v1/bootcamps HTTP/1.1 304 - - 135.309 ms
+ 

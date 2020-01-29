@@ -14,6 +14,7 @@ const hpp = require('hpp');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 const logger = require("./middleware/logger");
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 // Route files
@@ -25,7 +26,6 @@ dotenv.config({ path: './config/config.env' });
 connectDB();
 
 
-
 const app = express();
 
 
@@ -35,21 +35,7 @@ app.use(express.json());
 // Cookie parser
 app.use(cookieParser());
 
-// Dev logging middleware
-// if (process.env.NODE_ENV === 'development') {
-//   app.use(morgan('dev'));
-// }
-app.use(morgan('development', {
-  skip: function (req, res) {
-     return res.statusCode < 400
-  }, stream: process.stderr
-}));
-
-app.use(morgan('development', {
-  skip: function (req, res) {
-    return res.statusCode >= 400
-  }, stream: process.stdout
-}));
+app.use(require('morgan')("short", { "stream": logger.stream }));
 
 // File uploading
 app.use(fileupload());
@@ -90,12 +76,14 @@ app.use('/api/v1/reviews', reviews);
 
 app.use(errorHandler);
 
+
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(
   PORT, () => {
-      logger.info(`Example app listening on port ${PORT}`);
-      logger.debug(`More detailed log ${PORT}`);
+        logger.info(`Example app listening on port ${PORT}`);
+        logger.debug(`More detailed log ${PORT}`);
     }
 );
 
