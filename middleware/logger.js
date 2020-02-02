@@ -1,4 +1,5 @@
 const { createLogger, format, transports } = require("winston");
+const winstonMongodb =   require('winston-mongodb');
 
 // @desc    Logs request to console
 /*const logger = (req, res, next) => {
@@ -48,6 +49,12 @@ if (process.env.NODE_ENV !== "production") {
     level: level,
     format: productionFormat,
     transports: [
+      new transports.MongoDB({
+          db : 'mongodb://localhost:27017/devcamper',
+          collection : 'logs',
+          level : level,
+          capped : true
+      }),
       new transports.File({ filename: './logs/error.log', level: "error" }),
       new transports.File({ filename: "./logs/combined.log" })
     ]
