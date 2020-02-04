@@ -1,4 +1,6 @@
 const express = require('express');
+const  validate  = require('../http/validators/validator');
+const  loginValidator = require('../http/validators/loginValidator');
 const {
   register,
   refreshToken,
@@ -17,7 +19,7 @@ const { protect } = require('../middleware/auth');
 
 router.post('/register', register);
 router.post('/refresh-token', refreshToken);
-router.post('/login', login);
+router.post('/login', loginValidator(), validate, login);
 router.get('/logout', logout);
 router.get('/me', protect, getMe);
 router.put('/updatedetails', protect, updateDetails);
