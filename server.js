@@ -19,7 +19,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 
 // Route files
-const { bootcamps, courses, auth, users, reviews, tasks} = require('./routes');
+const { bootcamps, courses, auth, users, reviews} = require('./routes');
 // Load env vars
 dotenv.config({ path: './config/config.env' });
 
@@ -105,7 +105,6 @@ app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
 app.use('/api/v1/reviews', reviews);
-app.use('/api/v1/tasks', tasks);
 
 app.use(errorHandler);
 

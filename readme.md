@@ -1,6 +1,6 @@
 # DevCamper API
 
-> Backend API for todoList application, which is a bootcamp directory website
+> Backend API for DevCamper application, which is a bootcamp directory website
 
 ## Usage
 

@@ -3,7 +3,6 @@ const courses = require('./courses');
 const auth = require('./auth');
 const users = require('./users');
 const reviews = require('./reviews');
-const tasks = require('./tasks');
 
 
 module.exports ={
@@ -11,6 +10,5 @@ module.exports ={
     courses,
     auth,
     users,
-    reviews,
-    tasks
+    reviews
 }

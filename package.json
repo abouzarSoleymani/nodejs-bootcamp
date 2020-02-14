@@ -1,7 +1,7 @@
 {
-  "name": "todoList_api",
+  "name": "devcamper_api",
   "version": "1.0.0",
-  "description": "TodoList backend API",
+  "description": "Devcamper backend API",
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server",

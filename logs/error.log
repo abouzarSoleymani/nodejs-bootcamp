@@ -1,3 +1,0 @@
-2020-02-14 12:08:35 error: 	Not authorized to access this route {"url":"/api/v1/bootcamps"}
-2020-02-14 12:09:47 error: 	Not authorized to access this route {"url":"/api/v1/bootcamps"}
-2020-02-14 12:09:59 error: 	Task validation failed: title: Please add a title for the task {"url":"/api/v1/tasks"}

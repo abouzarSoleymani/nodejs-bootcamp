@@ -11,7 +11,6 @@ const Bootcamp = require('./models/Bootcamp');
 const Course = require('./models/Course');
 const User = require('./models/User');
 const Review = require('./models/Review');
-const Task = require('./models/Task');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -37,9 +36,7 @@ const users = JSON.parse(
 const reviews = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/reviews.json`, 'utf-8')
 );
-const tasks = JSON.parse(
-    fs.readFileSync(`${__dirname}/_data/tasks.json`, 'utf-8')
-);
+
 // Import into DB
 const importData = async () => {
   try {
@@ -47,7 +44,6 @@ const importData = async () => {
     await Course.create(courses);
     await User.create(users);
     await Review.create(reviews);
-    await Task.create(tasks);
     console.log('Data Imported...'.green.inverse);
     process.exit();
   } catch (err) {
@@ -62,7 +58,6 @@ const deleteData = async () => {
     await Course.deleteMany();
     await User.deleteMany();
     await Review.deleteMany();
-    await Task.deleteMany();
     console.log('Data Destroyed...'.red.inverse);
     process.exit();
   } catch (err) {
