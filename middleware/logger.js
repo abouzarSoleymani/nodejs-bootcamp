@@ -50,7 +50,7 @@ if (process.env.NODE_ENV !== "production") {
     format: productionFormat,
     transports: [
       new transports.MongoDB({
-          db : 'mongodb://localhost:27017/devcamper',
+          db : 'mongodb://localhost:27017/todoList',
           collection : 'logs',
           level : level,
           capped : true
