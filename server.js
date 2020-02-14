@@ -16,8 +16,7 @@ const connectDB = require('./config/db');
 const logger = require("./middleware/logger");
 
 const swaggerUi = require('swagger-ui-express');
-const swaggerJSDoc = require('swagger-jsdoc');
-
+const swaggerDocument = require('./swagger.json');
 // Route files
 const { bootcamps, courses, auth, users, reviews} = require('./routes');
 // Load env vars
@@ -29,30 +28,6 @@ connectDB();
 
 const app = express();
 
-const swaggerDefinition = {
-    info: {
-        title: 'MySQL Registration Swagger API',
-        version: '1.0.0',
-        description: 'Endpoints to test the user registration routes',
-    },
-    host: 'localhost:5000',
-    basePath: '/api/v1/',
-    securityDefinitions: {
-        bearerAuth: {
-            type: 'apiKey',
-            name: 'Authorization',
-            scheme: 'bearer',
-            in: 'header',
-        },
-    },
-};
-
-const options = {
-    swaggerDefinition,
-    apis: ['./routes/*'],
-};
-
-const swaggerSpec = swaggerJSDoc(options);
 
 // Body parser
 app.use(express.json());
@@ -92,14 +67,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
-app.get('/swagger.json', function(req, res) { // line 41
-    res.setHeader('Content-Type', 'application/json');
-    res.send(swaggerSpec);
-});
-
-// ...
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
