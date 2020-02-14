@@ -30,6 +30,20 @@ router
   .route('/:id/photo')
   .put(protect, authorize('publisher', 'admin'), bootcampPhotoUpload);
 
+/**
+ * @swagger
+ * /bootcamps:
+ *  get:
+ *    description: Use to request all customers
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *  post:
+ *    description: Use to request all customers
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
 router
   .route('/')
   .get(advancedResults(Bootcamp, 'courses'), getBootcamps)
