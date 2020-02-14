@@ -19,8 +19,8 @@ exports.getTasks = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getTask = asyncHandler(async (req, res, next) => {
   const task = await Task.findById(req.params.id).populate({
-     path: 'tasks',
-     select: 'name description'
+    path: 'tasks',
+    select: 'name description'
   });
 
   if (!task) {
